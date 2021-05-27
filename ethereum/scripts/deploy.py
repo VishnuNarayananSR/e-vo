@@ -1,7 +1,10 @@
-import os
-from brownie import accounts, Voting
+import brownie.project as project
+from brownie import network, accounts
 
 
 def main():
-    deployed_contract = Voting.deploy({'from': accounts[0]})
-    return deployed_contract
+    network.connect('gui')
+    EthereumProject = project.load('ethereum')
+    contract = EthereumProject.Voting
+    address = contract.deploy({'from':accounts[0]})
+    return address
