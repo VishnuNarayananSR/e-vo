@@ -57,6 +57,9 @@ contract Voting {
     function getVotersList() onlyOwner public view returns(Voter[] memory){
         return voters;
     }
+    function getCandidatesList() onlyOwner public view returns(Candidate[] memory){
+        return candidates;
+    }
     // handle duplicate candidate problem later
     function createCandidate(string memory _name, string memory _constituency, string memory _symbol) onlyOwner public {
         uint candId =  _generateHash(_name, _constituency, _symbol);
