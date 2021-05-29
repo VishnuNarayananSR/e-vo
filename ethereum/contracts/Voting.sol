@@ -31,11 +31,12 @@ contract Voting {
     Voter[] voters;
     mapping(uint => uint) public ballot; //hash to candidate mapping
     Candidate[] candidates;
-    mapping(uint => Voter) votersList; // voters id to voter mapping
+    mapping(uint => uint) votersList; // voters id to voter mapping
     
     constructor(){
         adminAddress = msg.sender;
         candidates.push(Candidate("nonce", "nonce", "nonce", 0,  false));
+        voters.push(Voter("nonce", 0, "nonce", false, false));
     }
     
     function startElection() public onlyOwner {
@@ -47,12 +48,15 @@ contract Voting {
     }
     // add right to vote facility later
     function createVoter(string memory _name, uint _id, string memory _constituency) public {
-        require(!votersList[_id].exists, "Voter id is already registered!.");
-        // voters.push(Voter(_name, _id, _constituency, true, true));
-        votersList[_id] = Voter(_name, _id, _constituency, true, true);
+        require(!voters[votersList[_id]].exists, "Voter id is already registered!.");
+        voters.push(Voter(_name, _id, _constituency, true, true));
+        votersList[_id] = voters.length - 1;
         
         emit voterAdded(_name, _constituency);
     } 
+    function getVotersList() onlyOwner public view returns(Voter[] memory){
+        return voters;
+    }
     // handle duplicate candidate problem later
     function createCandidate(string memory _name, string memory _constituency, string memory _symbol) onlyOwner public {
         uint candId =  _generateHash(_name, _constituency, _symbol);
@@ -69,13 +73,13 @@ contract Voting {
     
     function vote(uint _voterId, string memory _voteTo, string memory _constituency, string memory _symbol) public{
         require(electionOn, "Sorry. The election has ended.");
-        require(votersList[_voterId].exists, "You are not registered to vote.");
-        require(votersList[_voterId].canVote, "Sorry. You already voted.");
+        require(voters[votersList[_voterId]].exists, "You are not registered to vote.");
+        require(voters[votersList[_voterId]].canVote, "Sorry. You already voted.");
         uint candId = _generateHash(_voteTo, _constituency, _symbol);
         require(candidates[ballot[candId]].exists, "Selected candidate not found.");
-        require(keccak256(abi.encodePacked(candidates[ballot[candId]].constituency)) == keccak256(abi.encodePacked(votersList[_voterId].constituency)), "Sorry. You are voting for a candidate who is not in your constituency.");
+        require(keccak256(abi.encodePacked(candidates[ballot[candId]].constituency)) == keccak256(abi.encodePacked(voters[votersList[_voterId]].constituency)), "Sorry. You are voting for a candidate who is not in your constituency.");
         candidates[ballot[candId]].noOfVotes++; 
-        votersList[_voterId].canVote = false;
+        voters[votersList[_voterId]].canVote = false;
     }
     
     function getElectionResult() public view returns (Candidate[] memory){
