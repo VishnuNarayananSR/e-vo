@@ -7,5 +7,6 @@ urlpatterns = [
     path('',views.homepage),
     path('candidates/', include('candidates.urls')),
     path('vote', views.vote),
+    path('voters/', include('voters.urls'))
 ]
 urlpatterns += staticfiles_urlpatterns()
