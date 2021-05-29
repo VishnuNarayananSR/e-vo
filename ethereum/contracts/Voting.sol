@@ -4,7 +4,7 @@ contract Voting {
     address public adminAddress;
     bool public electionOn = false;
     modifier onlyOwner {
-        require(msg.sender == adminAddress);
+        require(msg.sender == adminAddress, "You must be admin to do this.");
         _;
     }
  

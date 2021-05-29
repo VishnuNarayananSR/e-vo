@@ -5,7 +5,7 @@ import os
 import json
 
 from ethereum.scripts import deploy
-address, contract = deploy.main() 
+deploy.main() 
 
 
 def homepage(request):

@@ -1,7 +1,5 @@
-from logging import addLevelName
-
-from eth_utils import address
-from web3 import contract
+import os
+from django.conf import settings
 import brownie.project as project
 from brownie import network, accounts
 
@@ -11,4 +9,6 @@ def main():
     EthereumProject = project.load('ethereum')
     contract = EthereumProject.Voting
     address = contract.deploy({'from':accounts[0]})
-    return address, contract
+    filepath = os.path.join(settings.MEDIA_ROOT, 'deploymentAddress.txt')
+    with open(filepath, 'w') as f:
+        f.write(str(address))
