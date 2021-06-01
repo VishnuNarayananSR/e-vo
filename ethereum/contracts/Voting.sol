@@ -1,8 +1,8 @@
 pragma solidity ^0.8.1;
 
 contract Voting {
-    address public adminAddress;
-    bool public electionOn = false;
+    address adminAddress;
+    bool electionOn = false;
     modifier onlyOwner {
         require(msg.sender == adminAddress, "You must be admin to do this.");
         _;
@@ -29,7 +29,7 @@ contract Voting {
     }
     
     Voter[] voters;
-    mapping(uint => uint) public ballot; //hash to candidate mapping
+    mapping(uint => uint) ballot; //hash to candidate mapping
     Candidate[] candidates;
     mapping(uint => uint) votersList; // voters id to voter mapping
     
@@ -75,8 +75,8 @@ contract Voting {
     }
     
     function vote(uint _voterId, string memory _voteTo, string memory _constituency, string memory _symbol) public{
-        require(electionOn, "Sorry. The election has ended.");
         require(voters[votersList[_voterId]].exists, "You are not registered to vote.");
+        require(electionOn, "Sorry. The election has ended.");
         require(voters[votersList[_voterId]].canVote, "Sorry. You already voted.");
         uint candId = _generateHash(_voteTo, _constituency, _symbol);
         require(candidates[ballot[candId]].exists, "Selected candidate not found.");
@@ -88,5 +88,9 @@ contract Voting {
     function getElectionResult() public view returns (Candidate[] memory){
         require(!electionOn, "Election has not ended.");
         return candidates;
+    }
+    
+    function getElectionState() public onlyOwner view returns (bool){
+        return electionOn;
     }
 }
