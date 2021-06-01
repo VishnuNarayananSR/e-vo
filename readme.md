@@ -18,7 +18,8 @@ brownie networks add development gui host='http://127.0.0.1:7545' cmd=ganache
  ###### You have now told brownie that you have a blockchain network, meant for development purposes and named it gui, since it has a nice gui interface from ganache. We use this blockchain network to deploy our smart contracts from inside e-vo.
 
 ## Running the application:
-
+1. Open Ganache.
+2. Run the following commands.
 ```bash
 cd path-to-evo/
 python manage.py runserver
