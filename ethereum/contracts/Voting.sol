@@ -62,6 +62,7 @@ contract Voting {
     }
     // handle duplicate candidate problem later
     function createCandidate(string memory _name, string memory _constituency, string memory _symbol) onlyOwner public {
+        require(!electionOn, "Sorry. The election has already began. You cannot add new candidates.");
         uint candId =  _generateHash(_name, _constituency, _symbol);
         require(!candidates[ballot[candId]].exists, "Candidate already in ballot list!.");
         candidates.push(Candidate(_name, _constituency, _symbol, 0, true));
