@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-vo</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}?{% now "U" %}">
 </head>
 <body>
     <section class="navigation">
@@ -16,21 +16,39 @@
           </div>
           <nav>
             <ul class="nav-list">
+              {% if user.is_authenticated %}
               <li>
-                <a href="/">Home</a>
+                <a href="{% url 'candidates:admin_home' %}">Home</a>
               </li>
+              {% else %}
               <li>
-                <a href="/vote">Vote</a>
+                <a href="{% url 'home' %}">Home</a>
               </li>
+              {% endif %}
               <li>
-                <a href="/candidates">Candidate Registration</a>
+                <a href="{% url 'voters:vote' %}">Vote</a>
               </li>
+              <!-- <li>
+                <a href="{% url 'candidates:register' %}">Candidate Registration</a>
+              </li> -->
               <li>
-                <a href="/voters/register">Voter Registration</a>
+                <a href="{% url 'voters:register' %}">Voter Registration</a>
               </li>
               <li>
                 <a href="#">About</a>
               </li>
+              {% if user.is_authenticated %}
+              <li>
+                <form action="{% url 'candidates:admin_logout' %}" method="post">
+                  {% csrf_token %}
+                  <button class="logout-btn" type="submit">Logout</button>
+                </form>
+              </li>
+              {% else %}
+              <li>
+                <a href="{% url 'candidates:admin_home' %}">Admin Panel</a>
+              </li>
+              {% endif %}
             </ul>
           </nav>
         </div>
