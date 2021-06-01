@@ -1,0 +1,18 @@
+{% extends 'base_layout.html' %}
+{% block content %}
+    <a href="{% url 'candidates:register' %}"><h3>Register Candidate</h3></a>
+    <br>
+    {% if is_election_on %}
+    <li>
+      <form action="{% url 'candidates:end_election' %}" method="post">
+        {% csrf_token %}
+        <button class="election-end btn" type="submit">End Election</button>
+      </form>
+    </li>
+    {% else %}
+    <form action="{% url 'candidates:start_election' %}" method="post">
+        {% csrf_token %}
+        <button class="election-start btn" type="submit">Start Election</button>
+      </form>
+    {% endif %}
+{% endblock %}
