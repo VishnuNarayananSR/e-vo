@@ -12,3 +12,4 @@ def main():
     filepath = os.path.join(settings.MEDIA_ROOT, 'deploymentAddress.txt')
     with open(filepath, 'w') as f:
         f.write(str(address))
+    pass
