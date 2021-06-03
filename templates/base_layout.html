@@ -1,61 +1,56 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>E-vo</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}?{% now "U" %}">
-</head>
-<body>
-    <section class="navigation">
-        <div class="nav-container">
-          <div class="logo">
-            <a href="/"><img src="{% static 'logo.png' %}" class="img-responsive" alt=""></a>
+    <link rel="stylesheet" href="{% static 'bootstrap-5.0.1/css/bootstrap.min.css' %}?{% now "U" %}" /> 
+    {% comment %} <link rel="stylesheet" href="{% static 'style.css' %}?{% now "U" %}" /> {% endcomment %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid px-4">
+        <a class="navbar-brand" href="/">
+          <img src="{% static 'logo.png' %}" alt="" height="60" class="d-inline-block align-text-top" />
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            {% if user.is_authenticated %}
+            <a class="nav-link mx-1" href="{% url 'candidates:admin_home' %}">Dashboard</a>
+            {% comment %} <a class="nav-link mx-1" href="{% url 'candidates:register' %}">Candidates</a> {% endcomment %}
+            <a class="nav-link mx-1" href="{% url 'candidates:register' %}">Register Candidate</a>
+            <form class="d-flex ms-2" action="{% url 'candidates:admin_logout' %}" method="post">
+              {% csrf_token %}
+              <button class="btn btn-outline-danger" type="submit">Logout</button>
+            </form>
+            {% else %}
+            <a class="nav-link mx-1" href="{% url 'voters:vote' %}">Vote</a>
+            <a class="nav-link mx-1" href="{% url 'voters:register' %}">Register Voter</a>
+            <a class="nav-link mx-1" href="#">About</a>
+            <a class="btn btn-outline-secondary ms-2" href="{% url 'candidates:admin_home' %}">Admin</a>
+            {% endif %}
           </div>
-          <nav>
-            <ul class="nav-list">
-              {% if user.is_authenticated %}
-              <li>
-                <a href="{% url 'candidates:admin_home' %}">Home</a>
-              </li>
-              {% else %}
-              <li>
-                <a href="{% url 'home' %}">Home</a>
-              </li>
-              {% endif %}
-              <li>
-                <a href="{% url 'voters:vote' %}">Vote</a>
-              </li>
-              <!-- <li>
-                <a href="{% url 'candidates:register' %}">Candidate Registration</a>
-              </li> -->
-              <li>
-                <a href="{% url 'voters:register' %}">Voter Registration</a>
-              </li>
-              <li>
-                <a href="#">About</a>
-              </li>
-              {% if user.is_authenticated %}
-              <li>
-                <form action="{% url 'candidates:admin_logout' %}" method="post">
-                  {% csrf_token %}
-                  <button class="logout-btn" type="submit">Logout</button>
-                </form>
-              </li>
-              {% else %}
-              <li>
-                <a href="{% url 'candidates:admin_home' %}">Admin Panel</a>
-              </li>
-              {% endif %}
-            </ul>
-          </nav>
         </div>
-      </section>
-      <div class="content">
-          {% block content%}
-          {% endblock %}
       </div>
-</body>
+    </nav>
+
+
+    <div class="content">{% block content%} {% endblock %}</div>
+
+    <script src="{% static 'bootstrap-5.0.1/js/bootstrap.bundle.min.js' %}?{% now "U" %}" > </script>
+  </body>
 </html>

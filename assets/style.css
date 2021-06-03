@@ -18,7 +18,7 @@
   text-transform: uppercase;
   font-size: 1.4em;
 }
-.img-responsive{
+.img-responsive {
   height: auto;
   width: auto;
   max-width: 90px;
@@ -47,8 +47,13 @@ nav ul li {
   float: left;
   position: relative;
 }
-nav ul li a,
-nav ul li a:visited {
+
+nav ul li button {
+  all: unset;
+}
+
+nav ul li > *,
+nav ul li > *:visited {
   display: block;
   padding: 0 20px;
   line-height: 60px;
@@ -56,7 +61,7 @@ nav ul li a:visited {
   color: #ffffff;
   text-decoration: none;
 }
-nav ul li a:hover,
-nav ul li a:visited:hover {
+nav ul li > *:hover,
+nav ul li > *:visited:hover {
   background: #2581dc;
 }

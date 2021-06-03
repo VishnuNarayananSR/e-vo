@@ -1,18 +1,106 @@
-{% extends 'base_layout.html' %}
+{% extends 'base_layout.html' %} 
 {% block content %}
-    <a href="{% url 'candidates:register' %}"><h3>Register Candidate</h3></a>
-    <br>
-    {% if is_election_on %}
-    <li>
-      <form action="{% url 'candidates:end_election' %}" method="post">
-        {% csrf_token %}
-        <button class="election-end btn" type="submit">End Election</button>
-      </form>
-    </li>
-    {% else %}
-    <form action="{% url 'candidates:start_election' %}" method="post">
-        {% csrf_token %}
-        <button class="election-start btn" type="submit">Start Election</button>
-      </form>
-    {% endif %}
+<div class="container-fluid p-4">
+
+  {% if is_election_on %}
+  <button class="end-election btn btn-danger mb-4" type="submit">End Election</button>
+  {% else %}
+  <button class="start-election btn btn-primary mb-4" type="button">Start Election</button>
+  {% endif %}
+
+  <nav class="nav nav-tabs" id="tab" role="tablist">
+    <button class="nav-link active" id="candidate-list" data-bs-toggle="tab" data-bs-target="#tabs-candidate-list" type="button" role="tab" aria-controls="tabs-candidate-list" aria-selected="true">Candidates</a>   
+    <button class="nav-link" id="result" data-bs-toggle="tab" data-bs-target="#tabs-result" type="button" role="tab" aria-controls="tabs-result" aria-selected="false">Result</a>      
+  </nav>
+
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="tabs-candidate-list" role="tabpanel" aria-labelledby="tabs-candidate-list-tab">
+        <table class="table table-striped m-2" style="max-width: 600px;">
+          <thead>
+            <tr>
+              <th scope="col">Symbol</th>
+              <th scope="col">Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for candidate in candidates %} 
+              <tr>
+                <td>{{ candidate.1 }}</td>
+                <td>{{ candidate.0 }}</td>
+              </tr>         
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+
+    <div class="tab-pane fade" id="tabs-result" role="tabpanel" aria-labelledby="tabs-result-tab">
+      {% if not is_election_on %}
+        <table class="table table-striped m-2">
+          <thead>
+            <tr>
+              <th scope="col">Symbol</th>
+              <th scope="col">Name</th>
+              <th scope="col">Constituency</th>
+              <th scope="col">Votes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for candidate in result %} 
+              <tr>
+                <td>{{ candidate.2 }}</td>
+                <td>{{ candidate.0 }}</td>
+                <td>{{ candidate.1 }}</td>
+                <td>{{ candidate.3 }}</td>
+              </tr>
+            {% endfor %} 
+          </tbody>
+        </table>
+      {% else %}
+        <div class="m-2 p-2">Results are only available after Election</div>
+      {% endif %}   
+    </div>
+  </div>
+
+  <div class="errors"></div>
+
+<script>
+  const electionOn = "{{ is_election_on }}" === "True";
+  const csrftoken = getCookie("csrftoken");
+  // election control
+  document.querySelector(!electionOn ? ".start-election" : ".end-election")?.addEventListener("click", async (e) => {
+    const res = await fetch(
+      !electionOn ? "{% url 'candidates:start_election' %}" : "{% url 'candidates:end_election' %}",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken,
+        },
+      }
+    );
+    const data = await res.json();
+    if (data.status === "success") {
+      location.reload();
+    }
+  });
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+
+</div>
+
 {% endblock %}
