@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .forms import VoterForm, VoteForm
+from django.contrib import messages
 import utils
 
 
@@ -14,9 +15,13 @@ def voter_registration(request):
             contract, tx_details, exceptions = utils.contract()
             try:
                 contract.createVoter(name, voter_id, constituency, tx_details)
+                messages.success(request, "Voter registered.")
+                return redirect(request.path)
             except exceptions.VirtualMachineError as e:
-                return HttpResponse(e.revert_msg)
-            return HttpResponse("Voter Registered.")
+                messages.error(request, e.revert_msg)
+                return redirect(request.path)
+        # messages.error(request, e.revert_msg) # set field errors
+        return redirect(request.path)
     else:
         form = VoterForm()
         return render(request, "voter_registration.html", {"form": form})

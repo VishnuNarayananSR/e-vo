@@ -1,12 +1,28 @@
 {% extends 'base_layout.html' %} {% load static %} {% block content %}
 
 <div class="container-fluid p-4">
+
+  {% if messages %}
+  <div class="messages">
+      {% for message in messages %}
+      <div {% if message.tags %} 
+        class="{{ message.tags }} alert
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} alert-danger {% else %} alert-success {% endif %}"
+        {% endif %} 
+        role="alert"
+      >
+        {{ message }}
+      </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+
   <h1 class="h2 mb-4">Voter registration</h1>
   <form method="POST" style="max-width: 600px">
     {%csrf_token %} {% for field in form %}
     <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
     {{ field }} {% endfor %}
-    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+    <button class="btn btn-primary mt-3" type="submit">Register</button>
   </form>
 </div>
 
