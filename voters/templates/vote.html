@@ -1,13 +1,55 @@
 {% extends 'base_layout.html' %} {% load static %} {% block content %}
 
 <div class="container-fluid p-4">
-  <h1 class="h2 mb-4">Vote</h1>
-  <form method="POST" style="max-width: 600px">
-    {%csrf_token %} {% for field in form %}
-    <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-    {{ field }} {% endfor %}
-    <button class="btn btn-primary mt-3" type="submit">Submit</button>
-  </form>
+    <h1 class="h2 mb-4">Vote</h1>
+    <form method="POST" style="max-width: 600px">
+        {%csrf_token %} 
+        {% for field in form %}
+            <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+            {{ field }} 
+        {% endfor %}
+
+        <div class="candidates mb-3">
+            <h3 class="mb-4">Vote for</h3>
+            {% for candidate in candidates %}
+                <div class="form-check form-check-inline mb-4">
+                    <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        name="candidateInfo" 
+                        id="{{ candidate.0 }}{{ forloop.counter }}" 
+                        value="{{ candidate.0 }}"
+                        data-symbol="{{ candidate.1 }}"
+                        data-candidate="{{ candidate.0 }}"
+                        required
+                    >
+                    <label class="form-check-label" for="{{ candidate.0 }}{{ forloop.counter }}">
+                        <div class="d-flex flex-column">
+                            <img height="70" class="align-self-start" src="{% static candidate.1 %}">
+                            <span>{{ candidate.0 }}</span>
+                        </div>
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button class="btn btn-primary mt-3" type="submit">Submit</button>
+    </form>
+
+    <script>
+        const symbolInput = document.getElementById('symbol-input')
+        const candidateInput = document.getElementById('candidate-input')
+        const symbols = document.querySelectorAll('input[type="radio"]')
+        symbols.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    symbolInput.value = e.target.dataset.symbol
+                    candidateInput.value = e.target.dataset.candidate
+                }
+            })
+        })
+    </script>
+
 </div>
 
 {% endblock %}
