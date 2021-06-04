@@ -1,11 +1,18 @@
 {% extends 'base_layout.html' %} {% block content %}
-<h1>Admin Login</h1>
-<div class="form" id="admin-form">
-  <form method="POST">
+<div class="container-fluid p-4">
+  <h1 class="h2 mb-4">Admin Login</h1>
+  <form method="POST" style="max-width: 600px">
     {%csrf_token %} {{ form }} {% if request.GET.next %}
     <input type="hidden" value="{{ request.GET.next }}" />
     {% endif %}
-    <input type="submit" value="Submit" />
+    <button class="btn btn-success mt-3" type="submit">Login</button>
   </form>
+
+  <script>
+    // TO STYLE SHITTY DJANGO AUTH FORM
+    document.querySelectorAll("form label").forEach((label) => label.classList.add("form-label"));
+    document.getElementById("id_username").classList.add("form-control", "mb-3");
+    document.getElementById("id_password").classList.add("form-control", "mb-3");
+  </script>
 </div>
 {% endblock %}

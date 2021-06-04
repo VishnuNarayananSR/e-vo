@@ -38,10 +38,11 @@
               <button class="btn btn-outline-danger" type="submit">Logout</button>
             </form>
             {% else %}
-            <a class="nav-link mx-1" href="{% url 'voters:vote' %}">Vote</a>
             <a class="nav-link mx-1" href="{% url 'voters:register' %}">Register Voter</a>
             <a class="nav-link mx-1" href="#">About</a>
-            <a class="btn btn-outline-secondary ms-2" href="{% url 'candidates:admin_home' %}">Admin</a>
+            <a class="nav-link mx-1" href="{% url 'candidates:admin_home' %}">Admin</a>
+            {% comment %} <a class="btn btn-outline-secondary mx-2" href="{% url 'candidates:admin_home' %}">Admin</a> {% endcomment %}
+            <a class="btn btn-outline-success ms-2" href="{% url 'voters:vote' %}"">Vote</a>
             {% endif %}
           </div>
         </div>
