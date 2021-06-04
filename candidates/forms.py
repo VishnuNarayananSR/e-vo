@@ -14,7 +14,7 @@ class CandidateForm(forms.Form):
     )
     # change symbol to image later
     # symbol = forms.CharField(label='Vote Symbol' , widget= forms.TextInput(attrs={'class':'form-field'}))
-    symbol = forms.ImageField(
+    symbol = forms.FileField(
         label="Vote Symbol",
         widget=forms.FileInput(attrs={"class": "form-control mb-3"}),
     )

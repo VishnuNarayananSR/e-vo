@@ -5,7 +5,6 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import utils
-import base64
 
 
 @login_required(login_url="/candidates/admin_login")
@@ -14,28 +13,29 @@ def register(request):
         form = CandidateForm(request.POST, request.FILES)
         name = form["name"].value()
         constituency = form["constituency"].value()
-        # symbol = form["symbol"].value()
-        # print(name, constituency, symbol)
-        handle_uploaded_file(form["symbol"].value())
-        print(form.is_valid())
         if form.is_valid():
-            print(name, constituency)
-            handle_uploaded_file(request.FILES["symbol"])
-            # contract, tx_details, exceptions = utils.contract(admin=True)
-            # try:
-            #     contract.createCandidate(name, constituency, symbol, tx_details)
-            # except exceptions.VirtualMachineError as e:
-            #     return HttpResponse(e.revert_msg)
+            symbol_file_dest = handle_uploaded_file(
+                request.FILES["symbol"], name + constituency  # do better naming
+            )
+            contract, tx_details, exceptions = utils.contract(admin=True)
+            try:
+                contract.createCandidate(
+                    name, constituency, symbol_file_dest, tx_details
+                )
+            except exceptions.VirtualMachineError as e:
+                return HttpResponse(e.revert_msg)
             return HttpResponse("Candidate Registered.")
     else:
         form = CandidateForm()
     return render(request, "candidate_registration.html", {"form": form})
 
 
-def handle_uploaded_file(f):
-    with open("assets/symbols/test.jpg", "wb+") as destination:
+def handle_uploaded_file(f, name):
+    dest = "symbols/" + name + ".jpg"
+    with open("assets/" + dest, "wb+") as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+    return dest
 
 
 def admin_login(request):

@@ -25,11 +25,17 @@ def vote(request):
     if request.method == 'POST':
         form = VoteForm(request.POST)
         voter_id = form['voter_id'].value()
-        vote_for = form['vote_for'].value()
         constituency = form['constituency'].value()
+        
+        vote_for = form['vote_for'].value()
         symbol = form['symbol'].value()
+
         if form.is_valid():
             contract, tx_details, exceptions = utils.contract()
+
+            candidates = contract.getCandidatesList(tx_details)
+            candidates = list(set(map(lambda c: (c[0], c[2]), candidates)))
+
             try:
                 contract.vote(voter_id, vote_for, constituency, symbol, tx_details)
             except exceptions.VirtualMachineError as e:
@@ -37,5 +43,5 @@ def vote(request):
             return HttpResponse('Voted Successfully.')
     else:
          form = VoteForm()
-    return render(request, 'voter_registration.html', {'form':form})
+    return render(request, 'vote.html', {'form':form})
 

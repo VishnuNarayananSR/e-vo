@@ -1,19 +1,27 @@
-{% extends 'base_layout.html' %} {% block content %}
+{% extends 'base_layout.html' %}
+{% load static %}
+{% block content %}
 <div class="container-fluid p-4">
   <h1 class="h2 mb-4">Register Candidate</h1>
-  <form method="POST" style="max-width: 600px">
-    {%csrf_token %} {% for field in form %}
-    <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-    {{ field }} {% endfor %}
+  <form method="POST" enctype="multipart/form-data" style="max-width: 600px">
+    {%csrf_token %} 
+    {% for field in form %}
+      <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+      {{ field }} 
+    {% endfor %} 
 
     {% comment %} <label class="form-label" for="symbol-select">Vote Symbol</label>
-    <input class="form-control" type="file" name="symbol-select" id="symbol-select" /> {% endcomment %}
-    
+    <input class="form-control" type="file" name="symbol-select" id="symbol-select" /> {% endcomment %} 
+
     {% if request.GET.next %}
     <input type="hidden" name="next" value="{{ request.GET.next }}" />
     {% endif %}
     <button type="submit" id="submit" class="btn btn-primary mt-3">Register</button>
+
+    {{ form.errors }} {{ form.non_field_errors }}
   </form>
+
+  {% comment %} <img src="{% static 'symbols/kk.jpg' %}" alt="" /> {% endcomment %}
 
   <script>
     // MEHH FUCK IT LETS USE URL TO SERVER'S STORAGE

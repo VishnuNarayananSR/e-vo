@@ -1,4 +1,5 @@
 {% extends 'base_layout.html' %} 
+{% load static %}
 {% block content %}
 <div class="container-fluid p-4">
 
@@ -25,7 +26,7 @@
           <tbody>
             {% for candidate in candidates %} 
               <tr>
-                <td>{{ candidate.1 }}</td>
+                <td><img height="70" src="{% static candidate.1 %}"></td>
                 <td>{{ candidate.0 }}</td>
               </tr>         
             {% endfor %}
@@ -47,7 +48,7 @@
           <tbody>
             {% for candidate in result %} 
               <tr>
-                <td>{{ candidate.2 }}</td>
+                <td><img height="70" src="{% static candidate.2 %}"></td>
                 <td>{{ candidate.0 }}</td>
                 <td>{{ candidate.1 }}</td>
                 <td>{{ candidate.3 }}</td>

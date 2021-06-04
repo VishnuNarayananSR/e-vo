@@ -1,7 +1,7 @@
 {% extends 'base_layout.html' %} {% load static %} {% block content %}
 
 <div class="container-fluid p-4">
-  <h1 class="h2 mb-4">Voter registration</h1>
+  <h1 class="h2 mb-4">Vote</h1>
   <form method="POST" style="max-width: 600px">
     {%csrf_token %} {% for field in form %}
     <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
