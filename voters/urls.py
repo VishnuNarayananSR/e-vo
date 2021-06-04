@@ -7,6 +7,6 @@ app_name = 'voters'
 
 urlpatterns = [
     # path('', views.voter_home),
-    path('register', views.voter_registration, name='register'),
-    path('vote', views.vote, name='vote'),
+    path('register/', views.voter_registration, name='register'),
+    path('vote/', views.vote, name='vote'),
 ]

@@ -1,5 +1,5 @@
 {% extends 'base_layout.html' %} {% block content %}
-<div class="container-fluid p-4">
+<div class="container-fluid p-4 d-flex  justify-center flex-column">
   <h1 class="h2 mb-4">Admin Login</h1>
   <form method="POST" style="max-width: 600px">
     {%csrf_token %} {{ form }} {% if request.GET.next %}

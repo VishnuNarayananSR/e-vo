@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib import messages
 import utils
 
 
@@ -23,8 +24,12 @@ def register(request):
                     name, constituency, symbol_file_dest, tx_details
                 )
             except exceptions.VirtualMachineError as e:
-                return HttpResponse(e.revert_msg)
-            return HttpResponse("Candidate Registered.")
+                messages.error(request, e.revert_msg)
+                return redirect(request.path)
+            messages.success(request, "Candidate Registered.")
+            return redirect(request.path)
+        messages.error(request, form.errors.as_text())
+        return redirect(request.path)
     else:
         form = CandidateForm()
     return render(request, "candidate_registration.html", {"form": form})

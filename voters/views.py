@@ -21,6 +21,7 @@ def voter_registration(request):
                 messages.error(request, e.revert_msg)
                 return redirect(request.path)
         # messages.error(request, e.revert_msg) # set field errors
+        messages.error(request, form.errors.as_text())
         return redirect(request.path)
     else:
         form = VoterForm()
@@ -41,8 +42,13 @@ def vote(request):
             try:
                 contract.vote(voter_id, vote_for, constituency, symbol, tx_details)
             except exceptions.VirtualMachineError as e:
-                return HttpResponse(e.revert_msg)
-            return HttpResponse("Voted Successfully.")
+                messages.error(request, e.revert_msg)
+                return redirect(request.path)
+            messages.success(request, "Voted Successfully.")
+            return redirect(request.path)
+        # messages.error(request, e.revert_msg) # set field errors
+        messages.error(request, form.errors.as_text())
+        return redirect(request.path)
     else:
         contract, tx_details, exceptions = utils.contract()
         candidates = contract.getCandidatesList()  # ?

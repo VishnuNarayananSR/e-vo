@@ -1,7 +1,21 @@
 {% extends 'base_layout.html' %}
 {% load static %}
 {% block content %}
+{% if messages %}
 <div class="container-fluid p-4">
+  <div class="messages">
+      {% for message in messages %}
+      <div {% if message.tags %} 
+        class="{{ message.tags }} alert
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} alert-danger {% else %} alert-success {% endif %}"
+        {% endif %} 
+        role="alert"
+      >
+        {{ message }}
+      </div>
+      {% endfor %}
+  </div>
+  {% endif %}
   <h1 class="h2 mb-4">Register Candidate</h1>
   <form method="POST" enctype="multipart/form-data" style="max-width: 600px">
     {%csrf_token %} 
