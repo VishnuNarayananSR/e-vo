@@ -15,14 +15,15 @@ def register(request):
         name = form["name"].value()
         constituency = form["constituency"].value()
         if form.is_valid():
-            symbol_file_dest = handle_uploaded_file(
-                request.FILES["symbol"], name + constituency  # do better naming
-            )
+            symbol_file_dest = "symbols/" + name + ".jpg"
             contract, tx_details, exceptions = utils.contract(admin=True)
             try:
                 contract.createCandidate(
                     name, constituency, symbol_file_dest, tx_details
                 )
+                handle_uploaded_file(
+                request.FILES["symbol"], symbol_file_dest  # do better naming
+            )
             except exceptions.VirtualMachineError as e:
                 messages.error(request, e.revert_msg)
                 return redirect(request.path)
@@ -35,8 +36,7 @@ def register(request):
     return render(request, "candidate_registration.html", {"form": form})
 
 
-def handle_uploaded_file(f, name):
-    dest = "symbols/" + name + ".jpg"
+def handle_uploaded_file(f, dest):
     with open("assets/" + dest, "wb+") as destination:
         for chunk in f.chunks():
             destination.write(chunk)
