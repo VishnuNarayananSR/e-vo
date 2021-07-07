@@ -4,7 +4,7 @@ An e-voting system using Blockchain
 
 ## Initial Setup:
 
-1. Install [Ganche](https://www.trufflesuite.com/ganache) on  your system. 
+1. Install [Ganache](https://www.trufflesuite.com/ganache) on  your system. 
   ###### Ganache is a personal Ethereum blockchain which you can use to run tests, execute commands, and inspect state while controlling how the chain operates.
   
 2. Install the required packages by running:
