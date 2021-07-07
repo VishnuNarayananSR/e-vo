@@ -20,7 +20,7 @@
   <form method="POST" enctype="multipart/form-data" style="max-width: 600px">
     {%csrf_token %} 
     {% for field in form %}
-      <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+      <!-- <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label> -->
       {{ field }} 
     {% endfor %} 
 
@@ -38,22 +38,6 @@
   {% comment %} <img src="{% static 'symbols/kk.jpg' %}" alt="" /> {% endcomment %}
 
   <script>
-    // MEHH FUCK IT LETS USE URL TO SERVER'S STORAGE
-    /* const symbolB64 = document.getElementById("symbol-b64");
-    const toBase64 = (file) =>
-      new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      }); */
-
-    /* document.getElementById("symbol-select").addEventListener("change", async (e) => {
-      const file = document.getElementById("symbol-select").files[0];
-      // ! NOPE
-      // symbolB64.value = await toBase64(file);
-      symbolB64.value = "yeet"
-    }); */
   </script>
 </div>
 {% endblock %}

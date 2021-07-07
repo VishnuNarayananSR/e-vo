@@ -16,6 +16,13 @@ class VoterForm(forms.Form):
         widget=forms.TextInput(attrs={"class": "form-control mb-3"}),
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            field = self.fields.get(field_name)  
+            if field:
+                if type(field.widget) in (forms.TextInput, forms.DateInput):
+                    field.widget = forms.TextInput(attrs={'placeholder': field.label})
 
 class VoteForm(forms.Form):
     voter_id = forms.IntegerField(
@@ -39,3 +46,11 @@ class VoteForm(forms.Form):
             attrs={"class": "form-control mb-3", "id": "symbol-input"}
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            field = self.fields.get(field_name)  
+            if field:
+                if type(field.widget) in (forms.TextInput, forms.DateInput):
+                    field.widget = forms.TextInput(attrs={'placeholder': field.label})

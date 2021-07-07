@@ -17,13 +17,20 @@
   </div>
   {% endif %}
 
-  <h1 class="h2 mb-4">Voter registration</h1>
-  <form method="POST" style="max-width: 600px">
-    {%csrf_token %} {% for field in form %}
-    <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-    {{ field }} {% endfor %}
-    <button class="btn btn-primary mt-3" type="submit">Register</button>
-  </form>
+  <div class="d-flex flex-column align-items-center">  
+    <h1 class="h2 mb-4">Voter registration</h1>
+    <div >
+      <form method="POST" style="max-width: 600px" class="form">
+        {%csrf_token %} {% for field in form %}
+        {{ field }} {% endfor %}
+        <button class="btn btn-dark mt-3" type="submit">Register</button>
+      </form>
+  
+    </div>
+    
+
+  </div>
+
 </div>
 
 {% endblock %}

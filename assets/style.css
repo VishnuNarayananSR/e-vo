@@ -1,67 +1,28 @@
-@charset "UTF-8";
-* {
-  font-family: sans-serif;
-  box-sizing: border-box;
-  margin: 0;
+/* @import url(https://fonts.googleapis.com/css?family=Roboto:300); */
+body{
+  background-color: whitesmoke;
 }
-.navigation {
-  height: 60px;
-  background: #262626;
-  margin-bottom: 1em;
-}
-
-.logo {
-  position: absolute;
-  padding-left: 20px;
-  float: left;
-  line-height: 60px;
-  text-transform: uppercase;
-  font-size: 1.4em;
-}
-.img-responsive {
-  height: auto;
-  width: auto;
-  max-width: 90px;
-  max-height: 60px;
-}
-.logo a,
-.logo a:visited {
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.nav-container {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-nav {
-  float: right;
-}
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-nav ul li {
-  float: left;
+.form {
+  max-width: 600px;
+  margin: 10px 50px 20px;
+  background: linear-gradient(to right, #DA22FF,#9733EE);
+  background-size: 100% 100%;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+    0 10px 10px rgba(0,0,0,0.22);
+  padding: 50px;
+  border-radius: 10px;
   position: relative;
+  text-align: center;
 }
 
-nav ul li button {
-  all: unset;
-}
-
-nav ul li > *,
-nav ul li > *:visited {
-  display: block;
-  padding: 0 20px;
-  line-height: 60px;
-  background: #262626;
-  color: #ffffff;
-  text-decoration: none;
-}
-nav ul li > *:hover,
-nav ul li > *:visited:hover {
-  background: #2581dc;
+input{
+  width: 100%;
+  border: 0;
+  padding: 10px;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+  margin: 1em;
+  border-radius: 3px;
 }
