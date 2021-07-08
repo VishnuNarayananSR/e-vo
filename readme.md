@@ -22,9 +22,9 @@ brownie networks add development gui host='http://127.0.0.1:7545' cmd=ganache
 2. Run the following commands.
 ```bash
 cd path-to-evo/
+python deploy.py 
 python manage.py runserver
 ```
-
 ## Recompiling  Smart contracts:
 ###### If  you wish to make any changes to the blockchain smart contracts, you mut recompile it  after doing so. The following comand does it.
 ```bash
