@@ -3,18 +3,33 @@ from django.http import HttpResponse
 from .forms import VoterForm, VoteForm
 from django.contrib import messages
 import utils
+import os 
+from face_auth import face_anti_spoofing
+from face_auth import face_recognition
 
+def handle_uploaded_file(f, dest):
+    filename = "assets/" + dest
+    if not os.path.exists(os.path.dirname(filename)):
+        os.makedirs(os.path.dirname(filename))
+    with open(filename, "wb+") as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    return dest
 
 def voter_registration(request):
     if request.method == "POST":
-        form = VoterForm(request.POST)
+        form = VoterForm(request.POST, request.FILES)
         name = form["name"].value()
         voter_id = form["voter_id"].value()
         constituency = form["constituency"].value()
         if form.is_valid():
+            img_file_dest = "voters/" + voter_id + ".jpg"
             contract, tx_details, exceptions = utils.contract()
             try:
                 contract.createVoter(name, voter_id, constituency, tx_details)
+                handle_uploaded_file(
+                request.FILES["voter_img"], img_file_dest
+            )
                 messages.success(request, "Voter registered.")
                 return redirect(request.path)
             except exceptions.VirtualMachineError as e:
@@ -38,12 +53,30 @@ def vote(request):
         symbol = form["symbol"].value()
 
         if form.is_valid():
-            contract, tx_details, exceptions = utils.contract()
             try:
-                contract.vote(voter_id, vote_for, constituency, symbol, tx_details)
-            except exceptions.VirtualMachineError as e:
-                messages.error(request, e.revert_msg)
+                live_img, alive = face_anti_spoofing.detect()
+            except:
+                messages.error(request, "Some error occured while video authentication. Please try again")
                 return redirect(request.path)
+            contract, tx_details, exceptions = utils.contract()
+            if alive:
+                face_verified = face_recognition.verify(voter_id, live_img)
+                if face_verified == "True":
+                    try:
+                        contract.vote(voter_id, vote_for, constituency, symbol, tx_details)
+                    except exceptions.VirtualMachineError as e:
+                        messages.error(request, e.revert_msg)
+                        return redirect(request.path)
+                elif face_verified == "Missing":
+                    messages.error(request, "Missing Face data. Your Face is not registered.")
+                    return redirect(request.path)
+                elif face_verified == "False":
+                    messages.error(request, "Face data did not match with registered face.")
+                    return redirect(request.path)
+            else:
+                messages.error(request, "Liveness Detection Failed.")
+                return redirect(request.path)
+            
             messages.success(request, "Voted Successfully.")
             return redirect(request.path)
         # messages.error(request, e.revert_msg) # set field errors
