@@ -15,6 +15,10 @@ class VoterForm(forms.Form):
         max_length=50,
         widget=forms.TextInput(attrs={"class": "form-control mb-3"}),
     )
+    voter_img = forms.FileField(
+        label="Voter Image",
+        widget=forms.FileInput(attrs={"class": "form-control mb-3"}),
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
