@@ -8,6 +8,8 @@
     <title>E-vo</title>
     <link rel="stylesheet" href="{% static 'bootstrap-5.0.1/css/bootstrap.min.css' %}?{% now "U" %}" /> 
     <link rel="stylesheet" href="{% static 'style.css' %}?{% now "U" %}" />
+    
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.1/chart.min.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -52,6 +54,6 @@
 
     <div class="content">{% block content%} {% endblock %}</div>
 
-    <script src="{% static 'bootstrap-5.0.1/js/bootstrap.bundle.min.js' %}?{% now "U" %}" > </script>
+    <script src="{% static 'bootstrap-5.0.1/js/bootstrap.bundle.min.js' %}?{% now "U" %}" > </script>   
   </body>
 </html>

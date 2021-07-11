@@ -36,7 +36,8 @@
 
     <div class="tab-pane fade" id="tabs-result" role="tabpanel" aria-labelledby="tabs-result-tab">
       {% if not is_election_on %}
-        <table class="table table-striped m-2">
+        {% comment %} results tabular {% endcomment %}
+        {% comment %} <table class="table table-striped m-2">
           <thead>
             <tr>
               <th scope="col">Symbol</th>
@@ -55,7 +56,48 @@
               </tr>
             {% endfor %} 
           </tbody>
-        </table>
+        </table> {% endcomment %}
+
+        {% comment %} results chart {% endcomment %}
+        <div class="d-flex justify-content-center align-items-center">
+          <div style="width:600px;" >
+            <canvas id="vote-results"></canvas>
+          </div>
+        </div>
+        <script>
+          const results = {};
+          {% for candidate in result %}    
+            if(!results.{{ candidate.0 }}) results.{{ candidate.0 }} = 0;
+            results.{{ candidate.0 }} += {{ candidate.3 }};   
+          {% endfor %} 
+
+          delete results.nonce
+          
+          // console.log(results, Object.keys(results), Object.values(results))
+
+          const ctx = document.getElementById('vote-results');
+          const voteResults = new Chart(ctx, {
+              type: 'doughnut',
+              data: {
+                  labels: Object.keys(results),
+                  datasets: [{
+                      label: 'No. of Votes',
+                      data: Object.values(results),
+                      backgroundColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(54, 162, 235)',
+                          'rgb(255, 206, 86)',
+                          'rgb(75, 192, 192)',
+                          'rgb(153, 102, 255)',
+                          'rgb(255, 159, 64)'
+                      ]
+                  }]
+              }
+              
+          });
+        </script>
+
+
       {% else %}
         <div class="m-2 p-2">Results are only available after Election</div>
       {% endif %}   

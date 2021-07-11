@@ -1,8 +1,8 @@
 {% extends 'base_layout.html' %}
 {% load static %}
 {% block content %}
-{% if messages %}
 <div class="container-fluid p-4">
+  {% if messages %}
   <div class="messages">
       {% for message in messages %}
       <div {% if message.tags %} 
