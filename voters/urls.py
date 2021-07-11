@@ -10,3 +10,4 @@ urlpatterns = [
     path('register/', views.voter_registration, name='register'),
     path('vote/', views.vote, name='vote'),
 ]
+
