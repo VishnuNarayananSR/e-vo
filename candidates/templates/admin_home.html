@@ -25,10 +25,12 @@
           </thead>
           <tbody>
             {% for candidate in candidates %} 
+            {% if candidate.0 != "nonce" %}
               <tr>
                 <td><img height="70" src="{% static candidate.1 %}"></td>
                 <td>{{ candidate.0 }}</td>
-              </tr>         
+              </tr>
+            {% endif%}         
             {% endfor %}
           </tbody>
         </table>
