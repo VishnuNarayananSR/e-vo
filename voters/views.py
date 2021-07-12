@@ -4,7 +4,7 @@ from .forms import VoterForm, VoteForm
 from django.contrib import messages
 import utils
 import os 
-from face_auth import face_anti_spoofing
+from face_auth.face_anti_spoofing import Detection
 from face_auth import face_recognition
 
 def handle_uploaded_file(f, dest):
@@ -54,7 +54,8 @@ def vote(request):
 
         if form.is_valid():
             try:
-                live_img, alive = face_anti_spoofing.detect()
+                auth = Detection()
+                live_img, alive = auth.detect()
             except:
                 messages.error(request, "Some error occured while video authentication. Please try again")
                 return redirect(request.path)
