@@ -30,7 +30,6 @@ class Detection():
         print("releasing cam")
         self.cam.release()
         print("cam released")
-        cv2.destroyWindow("Face Authentication")
         cv2.destroyAllWindows()
 
     def show_image(self,text,color = (0,0,255)):

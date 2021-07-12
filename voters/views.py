@@ -56,28 +56,32 @@ def vote(request):
             try:
                 auth = Detection()
                 live_img, alive = auth.detect()
-            except:
+                del(auth)
+                import cv2
+                cv2.destroyAllWindows()
+                contract, tx_details, exceptions = utils.contract()
+                if alive:
+                    face_verified = face_recognition.verify(voter_id, live_img)
+                    print("face_verified=",face_verified)
+                    if face_verified == "True":
+                        try:
+                            contract.vote(voter_id, vote_for, constituency, symbol, tx_details)
+                        except exceptions.VirtualMachineError as e:
+                            messages.error(request, e.revert_msg)
+                            return redirect(request.path)
+                    elif face_verified == "Missing":
+                        messages.error(request, "Missing Face data. Your Face is not registered.")
+                        return redirect(request.path)
+                    elif face_verified == "False":
+                        messages.error(request, "Face data did not match with registered face.")
+                        return redirect(request.path)
+                else:
+                    messages.error(request, "Liveness Detection Failed.")
+                    return redirect(request.path)
+            except Exception as e:
+                print(e)
                 messages.error(request, "Some error occured while video authentication. Please try again")
                 return redirect(request.path)
-            contract, tx_details, exceptions = utils.contract()
-            if alive:
-                face_verified = face_recognition.verify(voter_id, live_img)
-                if face_verified == "True":
-                    try:
-                        contract.vote(voter_id, vote_for, constituency, symbol, tx_details)
-                    except exceptions.VirtualMachineError as e:
-                        messages.error(request, e.revert_msg)
-                        return redirect(request.path)
-                elif face_verified == "Missing":
-                    messages.error(request, "Missing Face data. Your Face is not registered.")
-                    return redirect(request.path)
-                elif face_verified == "False":
-                    messages.error(request, "Face data did not match with registered face.")
-                    return redirect(request.path)
-            else:
-                messages.error(request, "Liveness Detection Failed.")
-                return redirect(request.path)
-            
             messages.success(request, "Voted Successfully.")
             return redirect(request.path)
         # messages.error(request, e.revert_msg) # set field errors

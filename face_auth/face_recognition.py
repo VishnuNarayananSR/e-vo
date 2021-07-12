@@ -12,7 +12,8 @@ def verify(voter_id, live_img):
     img = voter_id + ".jpg"
     img = os.path.join(DIR_NAME, img)
     if os.path.exists(img):
-        if (DeepFace.verify(img, live_img, enforce_detection=False)):
+        result = DeepFace.verify(img, live_img, enforce_detection=False)
+        if (result['verified']):
             return "True"
         else:
             return "False"
