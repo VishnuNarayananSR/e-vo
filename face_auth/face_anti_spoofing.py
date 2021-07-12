@@ -96,14 +96,14 @@ class Detection():
             if self.counter_ok_questions ==  self.limit_questions:
                     im = self.show_image("LIVENESS SUCCESSFUL",color = (0,255,0))
                     cv2.imshow('Face Authentication',im)
-                    if cv2.waitKey(2000) &0xFF == ord('q'):
+                    if cv2.waitKey(3000) &0xFF == ord('q'):
                         break
                     
                     return live_img, True
             elif i_try == self.limit_try-1:
                     im = self.show_image("LIVENESS FAIL")
                     cv2.imshow('Face Authentication',im)
-                    if cv2.waitKey(2000) &0xFF == ord('q'):
+                    if cv2.waitKey(3000) &0xFF == ord('q'):
                         break
                     return live_img, False
             else:

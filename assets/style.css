@@ -24,5 +24,5 @@ input{
   transition: all 0.3 ease;
   cursor: pointer;
   margin: 1em;
-  border-radius: 3px;
+  border-radius: 4px;
 }
