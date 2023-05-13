@@ -2,3 +2,8 @@ django
 web3
 py-solc
 eth-brownie
+scipy
+opencv-python
+imutils
+dlib
+deepface
