@@ -54,6 +54,8 @@ def admin_login(request):
             else:
                 return redirect("candidates:admin_home")
     else:
+            return render(request, "admin_login.html", {"form": form})
+    else:
         form = AuthenticationForm()
         return render(request, "admin_login.html", {"form": form})
 
